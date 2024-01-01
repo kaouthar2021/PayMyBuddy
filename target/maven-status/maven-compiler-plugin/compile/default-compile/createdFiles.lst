@@ -1,0 +1,5 @@
+com\mkyong\book\BookRepository.class
+com\mkyong\book\BookService.class
+com\mkyong\StartApplication.class
+com\mkyong\book\Book.class
+com\mkyong\book\BookController.class
