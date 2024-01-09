@@ -1,19 +1,19 @@
 package com.project.dto;
 
-import java.util.Date;
-
-public class FriendDto {
+public class TransactionDto {
     private String connection;
     private String description;
-    private Date date;
     private Double amount;
+    public TransactionDto() {
 
-    public FriendDto(String connection, String description, Date date, Double amount) {
+    }
+
+    public TransactionDto(String connection, String description,  Double amount) {
         this.connection = connection;
         this.description = description;
-        this.date = date;
         this.amount = amount;
     }
+
 
     public String getConnection() {
         return connection;
@@ -31,13 +31,6 @@ public class FriendDto {
         this.description = description;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
     public Double getAmount() {
         return amount;

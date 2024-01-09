@@ -25,7 +25,7 @@ public class SpringSecurityConfig {
                        .anyRequest().authenticated()
 
                 )
-                .formLogin(form->form.loginPage("/login").permitAll().successForwardUrl("/home"))
+                .formLogin(form->form.loginPage("/login").permitAll())
                 .build();
     }
 }

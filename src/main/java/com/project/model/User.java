@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Table(name = "user")
+
 public class User implements UserDetails {
     @Id
     @Column(name = "user_id")
@@ -41,8 +43,13 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id")
     )
-    private List<User> friends = new ArrayList<>();
+    private List<User> friends ;
 
+    @OneToMany(mappedBy = "userSender")
+    private List<Transaction> transactionsEmit;
+
+    @OneToMany(mappedBy = "userReceiver")
+    private List<Transaction> transactionsReceiver;
 
     public User() {
     }

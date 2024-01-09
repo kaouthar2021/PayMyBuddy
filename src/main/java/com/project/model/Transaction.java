@@ -2,7 +2,10 @@ package com.project.model;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
+@Table(name = "transactions")
 public class Transaction {
     @Id
     @Column(name = "id")
@@ -15,18 +18,36 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "user_id_receiver")
     private User userReceiver;
+
+
+    @Column(name = "transaction_date")
+    private Date transaction_date;
+
     @Column(name = "amount")
     private Double amount;
     @Column(name = "description")
     private String description;
+    public Transaction() {
 
-    public Transaction(int id, User userSender, User userReceiver, Double amount, String description) {
+    }
+
+    public Transaction(int id, User userSender, User userReceiver, Date transaction_date, Double amount, String description) {
         this.id = id;
         this.userSender = userSender;
         this.userReceiver = userReceiver;
+        this.transaction_date = transaction_date;
         this.amount = amount;
         this.description = description;
     }
+
+    public Transaction(User userSender, User userReceiver, Date transaction_date, Double amount, String description) {
+        this.userSender = userSender;
+        this.userReceiver = userReceiver;
+        this.transaction_date = transaction_date;
+        this.amount = amount;
+        this.description = description;
+    }
+
 
     public int getId() {
         return id;
@@ -51,6 +72,14 @@ public class Transaction {
     public void setUserReceiver(User userReceiver) {
         this.userReceiver = userReceiver;
     }
+    public Date getTransaction_date() {
+        return transaction_date;
+    }
+
+    public void setTransaction_date(Date transaction_date) {
+        this.transaction_date = transaction_date;
+    }
+
 
     public Double getAmount() {
         return amount;
@@ -67,4 +96,6 @@ public class Transaction {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 }

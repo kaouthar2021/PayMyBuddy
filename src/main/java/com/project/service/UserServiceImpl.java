@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -42,26 +41,32 @@ public class UserServiceImpl implements UserService , UserDetailsService {
     public Boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
+   public User findUserByEmail(String email){return userRepository.findByEmail(email);}
+    public User getCurrentUser(String emailConnectedUser) {
+        User connectedUser = userRepository.findByEmail(emailConnectedUser);
+        return connectedUser;
+    }
     public void addFriend(String userEmail, String friendEmail) {
         User connectedUser = userRepository.findByEmail(userEmail);
         User friendUser = userRepository.findByEmail(friendEmail);
 
-        Optional<User> isAlreadyFriend = connectedUser.getFriends().stream()
-                .filter(friend -> friend.getEmail().equals(friendUser.getEmail())).findFirst();
-        if (friendUser != connectedUser && friendEmail != userEmail) {
-            if (isAlreadyFriend.isPresent()) {
-                throw new RuntimeException("This user is already in this list");
+        if (friendUser != null && connectedUser != null && !friendEmail.equals(userEmail)) {
+            if (!connectedUser.getFriends().contains(friendUser)) {
+                connectedUser.getFriends().add(friendUser);
+                userRepository.save(connectedUser);
+            } else {
+                throw new RuntimeException("This user is already in the friend list");
             }
-
-            List<User> friendsList = connectedUser.getFriends();
-            friendsList.add(friendUser);
-            userRepository.save(connectedUser);
-
         } else {
-            throw new IllegalArgumentException("Your account not is user friend!");
+            throw new IllegalArgumentException("Invalid user or friend email");
         }
     }
 
+    public void saveUser(User user) {
+
+        userRepository.save(user);
+    }
 
 }
 

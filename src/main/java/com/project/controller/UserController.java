@@ -12,10 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
@@ -33,10 +33,13 @@ public class UserController {
     }
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") UserRegistrationDto registrationDto) {
-
+        if(userService.existsByEmail(registrationDto.getEmail())){
+            logger.error("user already exist");
+            return "redirect:/register?error=emailExists";
+        }
         userService.save(registrationDto);
         logger.info("user successfully registered");
-        return "register";
+        return "redirect:/register?success";
     }
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -49,7 +52,7 @@ public class UserController {
     public String login() {
         return "login";
     }
-    @GetMapping("/contact")
+    @GetMapping("/")
     public ModelAndView showFriends(ModelAndView modelAndView, @NotNull Authentication auth) {
         modelAndView = new ModelAndView("contact");
 
@@ -59,29 +62,30 @@ public class UserController {
         return modelAndView;
 
     }
-
-
     @GetMapping("/addContact")
-    public String addContact(Model model,  Authentication auth) {
-
-        Optional<List<User>> friends = Optional.ofNullable(userService.getUsersFriends(auth.getName()));
-        model.addAttribute("user");
-        return "addContact";
-    }
-
-    @PostMapping("/addContact")
-    public String registerContactFriend(@ModelAttribute("User") UserRegistrationDto userRegistrationDto, Authentication auth) {
-        if (auth != null && userService.existsByEmail(userRegistrationDto.getEmail())) {
-            userService.addFriend(userRegistrationDto.getEmail(), auth.getName());
-            logger.info("save contact");
-            return "redirect:/addContact?success";
+    public String addContact(Model model, Authentication auth) {
+        if (auth != null) {
+            List<User> friends = userService.getUsersFriends(auth.getName());
+            model.addAttribute("friends", friends);
+            return "addContact";
         } else {
-
-            logger.error("Authentication object is null or email does not exist.");
-            return "redirect:/addContact?error";
+            // Gérer le cas où l'authentification est null
+            return "redirect:/login";
         }
     }
 
+
+@PostMapping("/addContact")
+public String registerContactFriend(@RequestParam("email") String friendEmail, Authentication auth) {
+    if (auth != null && userService.existsByEmail(friendEmail)) {
+        userService.addFriend(friendEmail, auth.getName());
+        logger.info("Friend added successfully");
+        return "redirect:/addContact?success";
+    } else {
+        logger.error("Authentication object is null or email does not exist.");
+        return "redirect:/addContact?error";
+    }
+}
 
 
 }
