@@ -3,6 +3,7 @@ package com.project.service;
 import com.project.dto.UserRegistrationDto;
 import com.project.model.User;
 import com.project.repository.UserRepository;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static org.apache.logging.log4j.LogManager.getLogger;
 
 
 @Service
@@ -21,6 +24,7 @@ public class UserServiceImpl implements UserService , UserDetailsService {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
+    private static final Logger logger = getLogger(UserServiceImpl.class);
     public User save(UserRegistrationDto registrationDto) {
         String pwd = encoder.encode(registrationDto.getPassword());
         User user = new User(registrationDto.getFirstName(),
@@ -50,7 +54,11 @@ public class UserServiceImpl implements UserService , UserDetailsService {
     public void addFriend(String userEmail, String friendEmail) {
         User connectedUser = userRepository.findByEmail(userEmail);
         User friendUser = userRepository.findByEmail(friendEmail);
-
+        List<User> userFriends=connectedUser.getFriends();
+        for ( User userFriend:userFriends){
+            logger.info("name:"+userFriend.getEmail());
+        }
+        logger.info("friendName:"+friendUser.getEmail());
         if (friendUser != null && connectedUser != null && !friendEmail.equals(userEmail)) {
             if (!connectedUser.getFriends().contains(friendUser)) {
                 connectedUser.getFriends().add(friendUser);

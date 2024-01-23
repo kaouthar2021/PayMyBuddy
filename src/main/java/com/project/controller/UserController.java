@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.dto.FriendDto;
 import com.project.dto.UserRegistrationDto;
 import com.project.model.User;
 import com.project.service.UserServiceImpl;
@@ -12,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -52,7 +52,14 @@ public class UserController {
     public String login() {
         return "login";
     }
+
     @GetMapping("/")
+    public String home() {
+        logger.info("get index page");
+        return "index";
+    }
+
+    @GetMapping("/contact")
     public ModelAndView showFriends(ModelAndView modelAndView, @NotNull Authentication auth) {
         modelAndView = new ModelAndView("contact");
 
@@ -76,9 +83,9 @@ public class UserController {
 
 
 @PostMapping("/addContact")
-public String registerContactFriend(@RequestParam("email") String friendEmail, Authentication auth) {
-    if (auth != null && userService.existsByEmail(friendEmail)) {
-        userService.addFriend(friendEmail, auth.getName());
+public String registerContactFriend(FriendDto friendDto, Authentication auth) {
+    if (auth != null && userService.existsByEmail(friendDto.getEmail())) {
+        userService.addFriend(friendDto.getEmail(), auth.getName());
         logger.info("Friend added successfully");
         return "redirect:/addContact?success";
     } else {
@@ -86,7 +93,17 @@ public String registerContactFriend(@RequestParam("email") String friendEmail, A
         return "redirect:/addContact?error";
     }
 }
+    @GetMapping("/profile")
+    public String showProfile(Model model, Authentication auth) {
+
+        User user = userService.findUserByEmail(auth.getName());
+
+        return "profile";
 
 
-}
+        }
+
+    }
+
+
 
