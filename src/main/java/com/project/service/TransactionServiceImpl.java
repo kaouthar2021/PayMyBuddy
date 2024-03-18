@@ -8,7 +8,6 @@ import com.project.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final   UserRepository userRepository;
 
     @Autowired
-    public TransactionServiceImpl(TransactionRepository transactionRepository ,UserService userService,UserRepository userRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository , UserService userService, UserRepository userRepository) {
         this.transactionRepository = transactionRepository;
         this.userService=userService;
         this.userRepository=userRepository;
@@ -61,16 +60,14 @@ public class TransactionServiceImpl implements TransactionService {
        return transaction;
    }
 
-
-//    public Page<Transaction> getAllTransactionsSorted(Integer userId, Pageable pageable) {
-//        return transactionRepository.findAllTransactionById(userId,pageable);
-//    }
-
-
-    public Page<Transaction> findPaginated(int pageNo, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        return this.transactionRepository.findAll(pageable);
+    public Page<Transaction> findAllByEmitterId(final int idUser, Pageable pageableParam) {
+        return transactionRepository.findAllByUserSender_id(idUser, pageableParam);
+    }
+    public Page<Transaction> findAllByEmitterAndReceiverId(int idUser, Pageable pageableParam) {
+        return transactionRepository.findAllByUserEmitterAndUserReceiver_Id(idUser, pageableParam);
     }
 
-
+  public   Page<Transaction> findAllByUserSender_idOrUserReceiver_id(final int senderId,final int receiverId, Pageable pageableParam){
+       return transactionRepository.findAllByUserSender_idOrUserReceiver_id( senderId, receiverId, pageableParam) ;
+  };
 }

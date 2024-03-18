@@ -85,7 +85,7 @@ public class UserController {
 @PostMapping("/addContact")
 public String registerContactFriend(FriendDto friendDto, Authentication auth) {
     if (auth != null && userService.existsByEmail(friendDto.getEmail())) {
-        userService.addFriend(friendDto.getEmail(), auth.getName());
+        userService.addFriend( auth.getName(),friendDto.getEmail());
         logger.info("Friend added successfully");
         return "redirect:/addContact?success";
     } else {
