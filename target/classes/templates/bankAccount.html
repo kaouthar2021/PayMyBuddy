@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank Account</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container my-4">
+    <!-- Formulaire pour ajouter un compte bancaire -->
+    <h2>Add Bank Account</h2>
+    <form action="/bankAccount/addBankAccount" method="post" th:object="${bankAccount}">
+        <div class="form-group">
+            <label for="iban">IBAN:</label>
+            <input type="text" class="form-control" id="iban" th:field="*{iban}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" class="form-control" id="description" th:field="*{description}" required>
+        </div>
+        <button type="submit" class="btn btn-success">Add Bank Account</button>
+    </form>
+</div>
+
+<div class="container my-4">
+    <!-- Formulaire pour envoyer de l'argent -->
+    <h2>Send Money</h2>
+    <form action="/bankAccount/sendMoney" method="post">
+        <select name="iban" required>
+            <option value="" disabled selected>Select Bank Account</option>
+            <option th:each="bankAccount : ${listBankAccount}" th:value="${bankAccount.iban}" th:text="${bankAccount.iban}"></option>
+        </select>
+        <div class="form-group">
+            <label for="amountSend">Amount:</label>
+            <input type="number" class="form-control" id="amountSend" name="amount" required>
+        </div>
+        <button type="submit" class="btn btn-success">Send Money</button>
+    </form>
+</div>
+
+<div class="container my-4">
+    <!-- Formulaire pour recevoir de l'argent -->
+    <h2>Receive Money</h2>
+    <form action="/bankAccount/receiveMoney" method="post">
+        <select name="iban" required>
+            <option value="" disabled selected>Select Bank Account</option>
+            <option th:each="bankAccount : ${listBankAccount}" th:value="${bankAccount.iban}" th:text="${bankAccount.iban}"></option>
+        </select>
+        <div class="form-group">
+            <label for="amountReceive">Amount:</label>
+            <input type="number" class="form-control" id="amountReceive" name="amount" required>
+        </div>
+        <button type="submit" class="btn btn-success">Receive Money</button>
+    </form>
+</div>
+
+</body>
+</html>
