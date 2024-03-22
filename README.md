@@ -15,7 +15,6 @@
 ```
 MPD et Diagramme UML
 ``
-
-![PayMyBuddy(UML)](https://github.com/kaouthar2021/PayMyBuddy/assets/87474418/8b11a019-089a-4a00-b9a2-7e5a0a50cad2)
+![PayMyBuddy(UML)](https://github.com/kaouthar2021/PayMyBuddy/assets/87474418/107e8858-2300-4703-a825-849b2573d084)
 
 
