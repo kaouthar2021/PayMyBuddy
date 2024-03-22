@@ -1,6 +1,5 @@
-# Spring Boot + Spring Data JPA + MySQL example
+# PayMyBuddy
 
-Article link : https://mkyong.com/spring-boot/spring-boot-spring-data-jpa-mysql-example/
 
 ## Technologies used:
 * Spring Boot 3.1.2
@@ -14,19 +13,9 @@ Article link : https://mkyong.com/spring-boot/spring-boot-spring-data-jpa-mysql-
 
 ## How to run it
 ```
-
-$ git clone [https://github.com/mkyong/spring-boot.git](https://github.com/mkyong/spring-boot.git)
-
-$ cd spring-data-jpa-mysql
-
-# Run MySQL container for testing
-$ docker run --name c1 -p 3306:3306 -e MYSQL_USER=mkyong -e MYSQL_PASSWORD=password -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=mydb -d mysql:8.1
-
-# Skip test, the Testcontainers takes time
-$ ./mvnw clean package -Dmaven.test.skip=true
-
-$ ./mvnw spring-boot:run
-
+MPD et Diagramme UML
+![PayMyBuddy(MPD).jpg](src%2Fmain%2Fresources%2Fstatic%2Fimages%2FPayMyBuddy%28MPD%29.jpg)
+![PayMyBuddy(UML).jpg](src%2Fmain%2Fresources%2Fstatic%2Fimages%2FPayMyBuddy%28UML%29.jpg)
 ```
 
 
