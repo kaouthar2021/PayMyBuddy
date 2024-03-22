@@ -3,15 +3,21 @@ package com.project.controller;
 import com.project.dto.FriendDto;
 import com.project.dto.UserRegistrationDto;
 import com.project.model.User;
+import com.project.repository.UserRepository;
 import com.project.service.UserServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,6 +32,8 @@ public class UserController {
 
     @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private UserRepository userRepository;
     @ModelAttribute("/user")
     public UserRegistrationDto userRegistrationDto(){
 
@@ -59,6 +67,14 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+        return "redirect:/login?logout";
+    }
     @GetMapping("/contact")
     public ModelAndView showFriends(ModelAndView modelAndView, @NotNull Authentication auth) {
         modelAndView = new ModelAndView("contact");
@@ -76,7 +92,7 @@ public class UserController {
             model.addAttribute("friends", friends);
             return "addContact";
         } else {
-            // Gérer le cas où l'authentification est null
+
             return "redirect:/login";
         }
     }
@@ -93,15 +109,40 @@ public String registerContactFriend(FriendDto friendDto, Authentication auth) {
         return "redirect:/addContact?error";
     }
 }
-    @GetMapping("/profile")
-    public String showProfile(Model model, Authentication auth) {
 
-        User user = userService.findUserByEmail(auth.getName());
+    @GetMapping("/contact/{email}")
+    public String deleteFriend(@PathVariable String email,@NotNull Authentication auth) throws RuntimeException{
 
-        return "profile";
+        List<User> listFriends = userService.getUsersFriends(auth.getName());
 
+     ;
+        User currentUser = userService.getCurrentUser(auth.getName());
+        User contactToDelete = null;
 
+        if (currentUser != null) {
+            for (User friend : currentUser.getFriends()) {
+                if (friend.getEmail().equals( email)) {
+                    contactToDelete = friend;
+                    break; //
+                }
+            }
         }
+
+        if (contactToDelete == null) {
+            throw new RuntimeException("email Not Found");
+        }
+
+        listFriends.remove(contactToDelete);
+        userRepository.save(userService.getCurrentUser(auth.getName()));
+
+        return "redirect:/contact";
+    }
+
+
+
+
+
+
 
     }
 

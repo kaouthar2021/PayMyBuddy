@@ -29,6 +29,7 @@ public class User implements UserDetails {
     @Column(name = "solde")
     private double solde;
 
+
     public List<User> getFriends() {
         return friends;
     }
@@ -51,6 +52,16 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "userReceiver")
     private List<Transaction> transactionsReceiver;
 
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+    @OneToOne(mappedBy = "user")
+
+    private  BankAccount bankAccount;
     public User() {
     }
 

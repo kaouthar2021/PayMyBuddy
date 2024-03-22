@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Pay My Buddy Main</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+</head>
+<body>
+<!-- create navigation bar ( header) -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container" style="background-color:#7dd076">
+        <div class="navbar-header" >
+
+            <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
+            <a class="navbar-brand" href="#" th:href="@{/profile}">Profile</a>
+            <a class="navbar-brand" href="#" th:href="@{/contact}">Contact</a>
+            <a class="navbar-brand" href="#" th:href="@{/transfer}">Transfer</a>
+            <a class="navbar-brand" href="#" th:href="@{/logout}">Logout</a>
+
+
+        </div>
+
+    </div>
+</nav>
+
+<br>
+<br>
+<table class="table table-striped justify-content-center ">
+    <thead style="background-color : green;">
+    <tr style="color : white;">
+
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">EMail</th>
+        <th scope="col">CREDIT</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.solde}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="container">
+<!--    <h3>My Banks Accounts</h3>-->
+<!--    <div class="border border-dark border-3">-->
+
+<!--        <table class="table text-center table-borderless align-middle m-0">-->
+<!--            <thead class="bg-success text-light">-->
+<!--            <tr>-->
+<!--                <th>IBAN</th>-->
+<!--                <th>Description</th>-->
+<!--                <th>Action</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr th:each="bankAccount: ${listBankAccount}" class="text-center">-->
+<!--                <td><span th:text="${bankAccount.iban}"> IBAN </span></td>-->
+<!--                <td><span th:text="${bankAccount.description}"> Description </span></td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div class="container">-->
+<!--    <h3>Add a Bank Account</h3>-->
+<!--</div>-->
+<!--<div th:insert="{/addBankAccount}"></div>-->
+
+<div class="container my-4">
+        <h3>Transfer to my bank account</h3>
+        <div class="row  card text-center p-5 bg-secondary bg-opacity-25  mx-1">
+            <form method="post" th:action="@{/transferToMyBankAccount}">
+                <select th:name="id" name="connection" required>
+                    <option value="" disabled selected>Select Bank Account</option>
+                    <option th:each="bankAccount : ${listBankAccount}" th:value="${bankAccount.iban}"
+                            th:text="${bankAccount.iban}"></option>
+                </select>
+                <input type="number" name="amount" step=".01" th:min="0" th:max="${amountMax}" placeholder="0?"
+                       required style="width: 100px;" class="text-end" th:name="amount">
+                <button type="submit" class="text-light bg-success rounded">Transfer</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container my-4">
+        <h3>Transfer to "Pay My Buddy" account</h3>
+        <div class="row  card text-center p-5 bg-secondary bg-opacity-25  mx-1">
+            <form method="post" th:action="@{/transferFromMyBankAccount}">
+                <select th:name="id" name="connection" required>
+                    <option value="" disabled selected>Select Bank Account</option>
+                    <option th:each="bankAccount : ${listBankAccount}" th:value="${bankAccount.iban}"
+                            th:text="${bankAccount.iban}"></option>
+                </select>
+                <input type="number" name="amount" step=".01" th:min="0" placeholder="0?"
+                       required style="width: 100px;" class="text-end" th:name="amount">
+                <button type="submit" class="text-light bg-success rounded">Transfer</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

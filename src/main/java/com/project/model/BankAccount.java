@@ -14,14 +14,21 @@ public class BankAccount {
     @Column(name="description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     public BankAccount() {
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @OneToOne (cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+   private  User user;
     public BankAccount( String iban,String description) {
         this.iban = iban;
         this.description = description;
@@ -34,13 +41,7 @@ public class BankAccount {
         this.description = description;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Long getIdCountBank() {
         return idCountBank;

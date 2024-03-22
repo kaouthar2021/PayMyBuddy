@@ -15,4 +15,5 @@ public interface UserService {
    User findUserByEmail(String email);
     User getCurrentUser(String emailConnectedUser);
     public void saveUser(User user);
+    public void deleteUserFriendByEmail(String email);
 }

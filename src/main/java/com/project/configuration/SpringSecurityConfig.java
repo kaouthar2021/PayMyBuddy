@@ -22,15 +22,15 @@ public class SpringSecurityConfig {
        http.authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/home", "/login/oauth2/**","/register")
                         .permitAll()
-                        .requestMatchers("/addContact","/contact","/profile", "/transfer","/bankAccount")
+                        .requestMatchers("/addContact","/contact", "/transfer","/profile","/transferToMyBankAccount")
                         .authenticated())
 
                 .formLogin((form) -> form
                         .loginPage("/login")
 
                         .permitAll())
-                .logout((logout) -> logout
-                        .permitAll())
+               .logout((logout) ->logout
+                      .permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login/oauth2"));
 

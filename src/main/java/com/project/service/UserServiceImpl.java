@@ -75,6 +75,10 @@ public class UserServiceImpl implements UserService , UserDetailsService {
 
         userRepository.save(user);
     }
+    public void deleteUserFriendByEmail(String email) {
+
+        userRepository.deleteByFriendsEmail(email);
+    }
 
 }
 
