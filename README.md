@@ -14,7 +14,9 @@
 ## How to run it
 ```
 MPD et Diagramme UML
-https://github.com/kaouthar2021/PayMyBuddy/issues/1#issue-2201969860
-```
+```![PayMyBuddy(MPD)](https://github.com/kaouthar2021/PayMyBuddy/assets/87474418/ad3508b5-2b51-4e19-b545-02982206a5d5)
+
+![PayMyBuddy(UML)](https://github.com/kaouthar2021/PayMyBuddy/assets/87474418/a0979714-553f-4749-8940-80b240729150)
+
 
 
